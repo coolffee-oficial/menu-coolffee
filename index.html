@@ -1,242 +1,242 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>COOLFFEE - Menú</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --brand-gold: #c29957; --line-red: #bc2c2c; --bg: #030303; --card-bg: #111; --text-product: #d1d1d1; --text-dim: #888; }
-        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 480px; padding: 20px 20px 120px; box-sizing: border-box; }
-        
-        .header-section { text-align: center; margin: 40px 0 30px; }
-        .header-section h1 { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 3.2rem; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
-        .red-bar { width: 100%; height: 2px; background-color: var(--line-red); margin-top: 5px; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COOLFFEE - Menú</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand-gold: #c29957; --line-red: #bc2c2c; --bg: #030303; --card-bg: #111; --text-product: #d1d1d1; --text-dim: #888; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 480px; padding: 20px 20px 120px; box-sizing: border-box; }
+        
+        .header-section { text-align: center; margin: 40px 0 30px; }
+        .header-section h1 { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 3.2rem; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .red-bar { width: 100%; height: 2px; background-color: var(--line-red); margin-top: 5px; }
 
-        .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.6rem; margin: 35px 0 15px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
-        .product { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 10px; }
-        .p-info { flex: 1; }
-        .p-info h3 { margin: 0; font-size: 1.05rem; color: var(--text-product); font-weight: 700; text-transform: uppercase; }
-        .p-info p { margin: 3px 0 0; font-size: 0.8rem; color: var(--text-dim); line-height: 1.2; }
-        
-        .p-prices { display: flex; gap: 8px; flex-shrink: 0; }
-        .p-opt { color: #fff; font-size: 0.85rem; cursor: pointer; border: 1px solid #333; width: 75px; height: 38px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; background: #111; transition: 0.2s; line-height: 1; }
-        .p-opt:active { transform: scale(0.95); background: #222; }
-        .p-opt span { color: var(--brand-gold); font-weight: bold; margin-top: 2px; }
-        .p-opt small { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
+        .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.6rem; margin: 35px 0 15px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
+        .product { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 10px; }
+        .p-info { flex: 1; }
+        .p-info h3 { margin: 0; font-size: 1.05rem; color: var(--text-product); font-weight: 700; text-transform: uppercase; }
+        .p-info p { margin: 3px 0 0; font-size: 0.8rem; color: var(--text-dim); line-height: 1.2; }
+        
+        .p-prices { display: flex; gap: 8px; flex-shrink: 0; }
+        .p-opt { color: #fff; font-size: 0.85rem; cursor: pointer; border: 1px solid #333; width: 75px; height: 38px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; background: #111; transition: 0.2s; line-height: 1; }
+        .p-opt:active { transform: scale(0.95); background: #222; }
+        .p-opt span { color: var(--brand-gold); font-weight: bold; margin-top: 2px; }
+        .p-opt small { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
 
-        #view-cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--brand-gold); color: #000; padding: 15px; border-radius: 50px; text-align: center; font-weight: 800; cursor: pointer; display: none; z-index: 999; box-shadow: 0 5px 20px rgba(0,0,0,0.5); text-transform: uppercase; }
+        #view-cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--brand-gold); color: #000; padding: 15px; border-radius: 50px; text-align: center; font-weight: 800; cursor: pointer; display: none; z-index: 999; box-shadow: 0 5px 20px rgba(0,0,0,0.5); text-transform: uppercase; }
 
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 1001; }
-        .modal-content { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--card-bg); border-top: 3px solid var(--brand-gold); border-radius: 25px 25px 0 0; padding: 25px; box-sizing: border-box; max-height: 90vh; overflow-y: auto; color: #fff; }
-        
-        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #222; }
-        .qty-controls { display: flex; align-items: center; gap: 15px; }
-        .qty-btn { background: transparent; border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 1001; }
+        .modal-content { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--card-bg); border-top: 3px solid var(--brand-gold); border-radius: 25px 25px 0 0; padding: 25px; box-sizing: border-box; max-height: 90vh; overflow-y: auto; color: #fff; }
+        
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #222; }
+        .qty-controls { display: flex; align-items: center; gap: 15px; }
+        .qty-btn { background: transparent; border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
 
-        .form-group { margin-top: 18px; }
-        .form-group label { display: block; font-size: 0.7rem; color: var(--brand-gold); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: inherit; }
-        
-        .delivery-notice { font-size: 0.75rem; color: var(--brand-gold); margin-top: 8px; font-style: italic; border-left: 2px solid var(--line-red); padding-left: 10px; }
+        .form-group { margin-top: 18px; }
+        .form-group label { display: block; font-size: 0.7rem; color: var(--brand-gold); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: inherit; }
+        
+        .delivery-notice { font-size: 0.75rem; color: var(--brand-gold); margin-top: 8px; font-style: italic; border-left: 2px solid var(--line-red); padding-left: 10px; }
 
-        .main-btn { background: var(--brand-gold); color: #000; padding: 16px; border-radius: 50px; border: none; width: 100%; font-weight: 800; text-transform: uppercase; margin-top: 25px; cursor: pointer; }
-        .secondary-btn { background: none; border: none; color: var(--text-dim); width: 100%; margin-top: 15px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; }
-    </style>
+        .main-btn { background: var(--brand-gold); color: #000; padding: 16px; border-radius: 50px; border: none; width: 100%; font-weight: 800; text-transform: uppercase; margin-top: 25px; cursor: pointer; }
+        .secondary-btn { background: none; border: none; color: var(--text-dim); width: 100%; margin-top: 15px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; }
+    </style>
 </head>
 <body>
-    <div class="app-container">
-        <div class="header-section">
-            <h1>COOLFFEE</h1>
-            <div class="red-bar"></div>
-        </div>
-        <div id="menu-content">Cargando menú...</div>
-    </div>
+    <div class="app-container">
+        <div class="header-section">
+            <h1>COOLFFEE</h1>
+            <div class="red-bar"></div>
+        </div>
+        <div id="menu-content">Cargando menú...</div>
+    </div>
 
-    <div id="view-cart-btn" onclick="openModal('cart')">Ver Pedido (<span id="btn-qty">0</span>) - $<span id="btn-total">0.00</span></div>
+    <div id="view-cart-btn" onclick="openModal('cart')">Ver Pedido (<span id="btn-qty">0</span>) - $<span id="btn-total">0.00</span></div>
 
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="modal-content">
-            <div id="step-cart">
-                <h2 style="color:var(--brand-gold); text-transform:uppercase; margin-top:0;">Resumen</h2>
-                <div id="cart-list"></div>
-                <div style="text-align:right; font-size:1.4rem; margin: 20px 0; font-weight:700;">TOTAL: <span style="color:var(--brand-gold)">$<span id="modal-total">0.00</span></span></div>
-                <button class="main-btn" onclick="openModal('form')">Confirmar Pedido</button>
-                <button class="secondary-btn" onclick="closeModal()">+ Agregar más productos</button>
-            </div>
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <div id="step-cart">
+                <h2 style="color:var(--brand-gold); text-transform:uppercase; margin-top:0;">Resumen</h2>
+                <div id="cart-list"></div>
+                <div style="text-align:right; font-size:1.4rem; margin: 20px 0; font-weight:700;">TOTAL: <span style="color:var(--brand-gold)">$<span id="modal-total">0.00</span></span></div>
+                <button class="main-btn" onclick="openModal('form')">Confirmar Pedido</button>
+                <button class="secondary-btn" onclick="closeModal()">+ Agregar más productos</button>
+            </div>
 
-            <div id="step-form" style="display:none;">
-                <h2 style="color:var(--brand-gold); text-transform:uppercase; margin-top:0;">Datos de Entrega</h2>
-                <div class="form-group"><label>Nombre y Apellido</label><input type="text" id="c-nombre"></div>
-                <div class="form-group"><label>Cédula</label><input type="number" id="c-cedula"></div>
-                <div class="form-group"><label>Teléfono</label><input type="tel" id="c-telefono"></div>
-                <div class="form-group">
-                    <label>Tipo de Entrega</label>
-                    <select id="c-entrega" onchange="toggleDeliveryFields(this.value)">
-                        <option value="Pick Up">Pick Up (Retiro en local)</option>
-                        <option value="Delivery">Delivery</option>
-                    </select>
-                </div>
-                <div id="div-dir" style="display:none">
-                    <div class="delivery-notice">El costo del delivery será calculado por distancia.</div>
-                    <div class="form-group"><label>Dirección</label><textarea id="c-direccion"></textarea></div>
-                    <button class="secondary-btn" style="color:#fff; border:1px solid #333; padding:10px; border-radius:8px;" onclick="getGPS()">📍 Adjuntar Ubicación GPS</button>
-                    <input type="hidden" id="c-gps">
-                </div>
-                <div class="form-group">
-                    <label>Método de Pago</label>
-                    <select id="c-pago" onchange="document.getElementById('c-pago-nota').style.display = this.value==='Combinado'?'block':'none'">
-                        <option value="Pago Móvil">Pago Móvil</option>
-                        <option value="Binance">Binance</option>
-                        <option value="Efectivo Divisas">Efectivo Divisas</option>
-                        <option value="Combinado">Pago Combinado</option>
-                    </select>
-                    <textarea id="c-pago-nota" style="display:none; margin-top:10px;" placeholder="Detalle su pago combinado..."></textarea>
-                </div>
-                <div class="form-group"><label>Notas</label><textarea id="c-notas"></textarea></div>
-                <button class="main-btn" onclick="sendOrder()">Enviar a WhatsApp</button>
-                <button class="secondary-btn" onclick="openModal('cart')">← Volver al carrito</button>
-            </div>
-        </div>
-    </div>
+            <div id="step-form" style="display:none;">
+                <h2 style="color:var(--brand-gold); text-transform:uppercase; margin-top:0;">Datos de Entrega</h2>
+                <div class="form-group"><label>Nombre y Apellido</label><input type="text" id="c-nombre"></div>
+                <div class="form-group"><label>Cédula</label><input type="number" id="c-cedula"></div>
+                <div class="form-group"><label>Teléfono</label><input type="tel" id="c-telefono"></div>
+                <div class="form-group">
+                    <label>Tipo de Entrega</label>
+                    <select id="c-entrega" onchange="toggleDeliveryFields(this.value)">
+                        <option value="Pick Up">Pick Up (Retiro en local)</option>
+                        <option value="Delivery">Delivery</option>
+                    </select>
+                </div>
+                <div id="div-dir" style="display:none">
+                    <div class="delivery-notice">El costo del delivery será calculado por distancia.</div>
+                    <div class="form-group"><label>Dirección</label><textarea id="c-direccion"></textarea></div>
+                    <button class="secondary-btn" style="color:#fff; border:1px solid #333; padding:10px; border-radius:8px;" onclick="getGPS()">📍 Adjuntar Ubicación GPS</button>
+                    <input type="hidden" id="c-gps">
+                </div>
+                <div class="form-group">
+                    <label>Método de Pago</label>
+                    <select id="c-pago" onchange="document.getElementById('c-pago-nota').style.display = this.value==='Combinado'?'block':'none'">
+                        <option value="Pago Móvil">Pago Móvil</option>
+                        <option value="Binance">Binance</option>
+                        <option value="Efectivo Divisas">Efectivo Divisas</option>
+                        <option value="Combinado">Pago Combinado</option>
+                    </select>
+                    <textarea id="c-pago-nota" style="display:none; margin-top:10px;" placeholder="Detalle su pago combinado..."></textarea>
+                </div>
+                <div class="form-group"><label>Notas</label><textarea id="c-notas"></textarea></div>
+                <button class="main-btn" onclick="sendOrder()">Enviar a WhatsApp</button>
+                <button class="secondary-btn" onclick="openModal('cart')">← Volver al carrito</button>
+            </div>
+        </div>
+    </div>
 
-    <script>
-        const sheetId = '1dHPXGveUToshD1fKRnEf0EwdNnTNE3EuvYTQA3200q8';
-        const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Productos`;
-        let cart = [];
+    <script>
+        const sheetId = '1dHPXGveUToshD1fKRnEf0EwdNnTNE3EuvYTQA3200q8';
+        const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Productos`;
+        let cart = [];
 
-        async function loadMenu() {
-            try {
-                const res = await fetch(base);
-                const text = await res.text();
-                const lines = text.split('\n').slice(1);
-                const menu = {};
-                lines.forEach(line => {
-                    const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s?.replace(/"/g, '').trim());
-                    const categoria = columns[1];
-                    const nombre = columns[2];
-                    const descripcion = columns[3];
-                    const p1 = columns[4];
-                    const p2 = columns[5];
+        async function loadMenu() {
+            try {
+                const res = await fetch(base);
+                const text = await res.text();
+                const lines = text.split('\n').slice(1);
+                const menu = {};
+                lines.forEach(line => {
+                    const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s?.replace(/"/g, '').trim());
+                    const categoria = columns[1];
+                    const nombre = columns[2];
+                    const descripcion = columns[3];
+                    const p1 = columns[4];
+                    const p2 = columns[5];
 
-                    if (!menu[categoria]) menu[categoria] = [];
-                    const opts = [];
-                    if (p1 && p1 !== "") opts.push({ label: (p2 && p2 !== "") ? '12oz' : 'Ver', price: parseFloat(p1.replace(',', '.')) });
-                    if (p2 && p2 !== "") opts.push({ label: '16oz', price: parseFloat(p2.replace(',', '.')) });
-                    menu[categoria].push({ categoria, nombre, descripcion, opts });
-                });
-                renderMenu(menu);
-            } catch (e) { console.error(e); }
-        }
+                    if (!menu[categoria]) menu[categoria] = [];
+                    const opts = [];
+                    if (p1 && p1 !== "") opts.push({ label: (p2 && p2 !== "") ? '12oz' : 'Ver', price: parseFloat(p1.replace(',', '.')) });
+                    if (p2 && p2 !== "") opts.push({ label: '16oz', price: parseFloat(p2.replace(',', '.')) });
+                    menu[categoria].push({ categoria, nombre, descripcion, opts });
+                });
+                renderMenu(menu);
+            } catch (e) { console.error(e); }
+        }
 
-        function renderMenu(menu) {
-            const container = document.getElementById('menu-content');
-            container.innerHTML = '';
-            for (const cat in menu) {
-                container.innerHTML += `<h2 class="category-title">${cat}</h2>`;
-                menu[cat].forEach(p => {
-                    const div = document.createElement('div');
-                    div.className = 'product';
-                    div.innerHTML = `
-                        <div class="p-info"><h3>${p.nombre}</h3><p>${p.descripcion}</p></div>
-                        <div class="p-prices">${p.opts.map(o => `
-                            <div class="p-opt" onclick="addToCart('${p.categoria}', '${p.nombre}', '${o.label}', ${o.price})">
-                                <small>${o.label === 'Ver' ? '' : o.label}</small>
-                                <span>$${o.price.toFixed(2)}</span>
-                            </div>`).join('')}
-                        </div>
-                    `;
-                    container.appendChild(div);
-                });
-            }
-        }
+        function renderMenu(menu) {
+            const container = document.getElementById('menu-content');
+            container.innerHTML = '';
+            for (const cat in menu) {
+                container.innerHTML += `<h2 class="category-title">${cat}</h2>`;
+                menu[cat].forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'product';
+                    div.innerHTML = `
+                        <div class="p-info"><h3>${p.nombre}</h3><p>${p.descripcion}</p></div>
+                        <div class="p-prices">${p.opts.map(o => `
+                            <div class="p-opt" onclick="addToCart('${p.categoria}', '${p.nombre}', '${o.label}', ${o.price})">
+                                <small>${o.label === 'Ver' ? '' : o.label}</small>
+                                <span>$${o.price.toFixed(2)}</span>
+                            </div>`).join('')}
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            }
+        }
 
-        function addToCart(cat, name, size, price) {
-            const labelSize = size === 'Ver' ? '' : size;
-            const id = cat + name + labelSize;
-            const item = cart.find(i => i.id === id);
-            if (item) item.qty++;
-            else cart.push({ id, cat, name, size: labelSize, price: parseFloat(price), qty: 1 });
-            updateUI();
-        }
+        function addToCart(cat, name, size, price) {
+            const labelSize = size === 'Ver' ? '' : size;
+            const id = cat + name + labelSize;
+            const item = cart.find(i => i.id === id);
+            if (item) item.qty++;
+            else cart.push({ id, cat, name, size: labelSize, price: parseFloat(price), qty: 1 });
+            updateUI();
+        }
 
-        function updateUI() {
-            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
-            const count = cart.reduce((s, i) => s + i.qty, 0);
-            document.getElementById('view-cart-btn').style.display = count > 0 ? 'block' : 'none';
-            document.getElementById('btn-qty').innerText = count;
-            document.getElementById('btn-total').innerText = total.toFixed(2);
-            document.getElementById('modal-total').innerText = total.toFixed(2);
-            
-            const list = document.getElementById('cart-list');
-            list.innerHTML = cart.map((item, index) => `
-                <div class="cart-item">
-                    <div><strong>${item.cat}</strong> ${item.name} <small style="color:var(--brand-gold)">${item.size}</small><br>$${item.price.toFixed(2)}</div>
-                    <div class="qty-controls">
-                        <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
-                        <span>${item.qty}</span>
-                        <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
-                    </div>
-                </div>
-            `).join('');
-        }
+        function updateUI() {
+            const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+            const count = cart.reduce((s, i) => s + i.qty, 0);
+            document.getElementById('view-cart-btn').style.display = count > 0 ? 'block' : 'none';
+            document.getElementById('btn-qty').innerText = count;
+            document.getElementById('btn-total').innerText = total.toFixed(2);
+            document.getElementById('modal-total').innerText = total.toFixed(2);
+            
+            const list = document.getElementById('cart-list');
+            list.innerHTML = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div><strong>${item.cat}</strong> ${item.name} <small style="color:var(--brand-gold)">${item.size}</small><br>$${item.price.toFixed(2)}</div>
+                    <div class="qty-controls">
+                        <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                        <span>${item.qty}</span>
+                        <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
 
-        function changeQty(index, delta) {
-            cart[index].qty += delta;
-            if (cart[index].qty <= 0) cart.splice(index, 1);
-            updateUI();
-            if (cart.length === 0) closeModal();
-        }
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) cart.splice(index, 1);
+            updateUI();
+            if (cart.length === 0) closeModal();
+        }
 
-        function toggleDeliveryFields(val) {
-            document.getElementById('div-dir').style.display = val === 'Delivery' ? 'block' : 'none';
-        }
+        function toggleDeliveryFields(val) {
+            document.getElementById('div-dir').style.display = val === 'Delivery' ? 'block' : 'none';
+        }
 
-        function openModal(step) {
-            document.getElementById('modal-overlay').style.display = 'block';
-            document.getElementById('step-cart').style.display = step === 'cart' ? 'block' : 'none';
-            document.getElementById('step-form').style.display = step === 'form' ? 'block' : 'none';
-        }
+        function openModal(step) {
+            document.getElementById('modal-overlay').style.display = 'block';
+            document.getElementById('step-cart').style.display = step === 'cart' ? 'block' : 'none';
+            document.getElementById('step-form').style.display = step === 'form' ? 'block' : 'none';
+        }
 
-        function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
+        function closeModal() { document.getElementById('modal-overlay').style.display = 'none'; }
 
-        function getGPS() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(pos => {
-                    document.getElementById('c-gps').value = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
-                    alert("📍 Ubicación fijada.");
-                });
-            }
-        }
+        function getGPS() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    document.getElementById('c-gps').value = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    alert("📍 Ubicación fijada.");
+                });
+            }
+        }
 
-        function sendOrder() {
-            const n = document.getElementById('c-nombre').value;
-            if(!n || !document.getElementById('c-telefono').value) return alert("Nombre y Teléfono son obligatorios.");
-            const code = 'CF-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-            
-            let msg = `*PEDIDO #${code} - COOLFFEE*\n`;
-            msg += `__________________________\n\n`;
-            msg += `*Cliente:* ${n}\n*Cédula:* ${document.getElementById('c-cedula').value}\n*Tlf:* ${document.getElementById('c-telefono').value}\n`;
-            msg += `*Entrega:* ${document.getElementById('c-entrega').value}\n`;
-            if(document.getElementById('c-gps').value) msg += `*GPS:* ${document.getElementById('c-gps').value}\n`;
-            msg += `*Pago:* ${document.getElementById('c-pago').value}\n`;
-            
-            msg += `\n*PRODUCTOS:*\n`;
-            msg += `__________________________\n\n`;
-            msg += cart.map(i => {
-                const sub = (i.price * i.qty).toFixed(2);
-                return `*${i.qty}x ${i.cat.toUpperCase()} ${i.name}* ${i.size ? '['+i.size+']' : ''}\n  _Precio: $${i.price.toFixed(2)} c/u - Subtotal: $${sub}_`;
-            }).join('\n\n');
-            msg += `\n__________________________\n\n`;
-            
-            msg += `*TOTAL A PAGAR: $${document.getElementById('modal-total').innerText}*`;
-            if(document.getElementById('c-notas').value) msg += `\n\n*Nota:* ${document.getElementById('c-notas').value}`;
-            
-            window.open(`https://wa.me/584167492934?text=${encodeURIComponent(msg)}`, '_blank');
-        }
+        function sendOrder() {
+            const n = document.getElementById('c-nombre').value;
+            if(!n || !document.getElementById('c-telefono').value) return alert("Nombre y Teléfono son obligatorios.");
+            const code = 'CF-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+            
+            let msg = `*PEDIDO #${code} - COOLFFEE*\n`;
+            msg += `__________________________\n\n`;
+            msg += `*Cliente:* ${n}\n*Cédula:* ${document.getElementById('c-cedula').value}\n*Tlf:* ${document.getElementById('c-telefono').value}\n`;
+            msg += `*Entrega:* ${document.getElementById('c-entrega').value}\n`;
+            if(document.getElementById('c-gps').value) msg += `*GPS:* ${document.getElementById('c-gps').value}\n`;
+            msg += `*Pago:* ${document.getElementById('c-pago').value}\n`;
+            
+            msg += `\n*PRODUCTOS:*\n`;
+            msg += `__________________________\n\n`;
+            msg += cart.map(i => {
+                const sub = (i.price * i.qty).toFixed(2);
+                return `*${i.qty}x ${i.cat.toUpperCase()} ${i.name}* ${i.size ? '['+i.size+']' : ''}\n  _Precio: $${i.price.toFixed(2)} c/u - Subtotal: $${sub}_`;
+            }).join('\n\n');
+            msg += `\n__________________________\n\n`;
+            
+            msg += `*TOTAL A PAGAR: $${document.getElementById('modal-total').innerText}*`;
+            if(document.getElementById('c-notas').value) msg += `\n\n*Nota:* ${document.getElementById('c-notas').value}`;
+            
+            window.open(`https://wa.me/584167492934?text=${encodeURIComponent(msg)}`, '_blank');
+        }
 
-        loadMenu();
-    </script>
+        loadMenu();
+    </script>
 </body>
 </html>
