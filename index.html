@@ -3,25 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Coolffee - Menú Real Time</title>
+    <title>COOLFFEE - Menú</title>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --brand-gold: #c29957; --line-red: #bc2c2c; --bg: #030303; --text-product: #d1d1d1; --text-dim: #666; }
+        :root { --brand-gold: #c29957; --line-red: #bc2c2c; --bg: #030303; --text-product: #d1d1d1; --text-dim: #888; }
         body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; }
-        .app-container { width: 100%; max-width: 480px; padding: 20px 25px 140px; box-sizing: border-box; }
-        .header-section { text-align: center; margin-top: 40px; margin-bottom: 25px; }
-        .header-section h1 { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 3.5rem; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
-        .red-bar { width: 100%; height: 3px; background-color: var(--line-red); margin: 5px auto 0; }
-        .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.8rem; margin: 40px 0 20px; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 8px; }
-        .product { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; text-align: left; }
-        .p-info { flex: 1; padding-right: 15px; }
-        .p-info h3 { margin: 0; font-size: 1.1rem; color: var(--text-product); font-weight: 700; text-transform: uppercase; }
-        .p-info p { margin: 4px 0 0; font-size: 0.85rem; color: var(--text-dim); line-height: 1.3; }
-        .p-prices { display: flex; gap: 8px; flex-shrink: 0; }
-        .p-opt { color: #fff; font-size: 0.9rem; cursor: pointer; border: 1px solid #444; padding: 8px 12px; border-radius: 5px; transition: 0.2s; display: flex; align-items: center; background: #111; }
-        .p-opt span { color: var(--brand-gold); margin-left: 4px; font-weight: bold; }
-        #order-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--brand-gold); color: #000; padding: 20px; box-sizing: border-box; display: none; text-align: center; font-weight: bold; border-radius: 20px 20px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); z-index: 1000; }
-        .btn-submit { background: #000; color: #fff; padding: 12px 25px; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 10px; font-size: 1rem; transition: 0.3s; }
+        .app-container { width: 100%; max-width: 480px; padding: 20px 20px 180px; box-sizing: border-box; }
+        .header-section { text-align: center; margin: 40px 0 30px; }
+        .header-section h1 { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 3.2rem; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .red-bar { width: 100%; height: 2px; background-color: var(--line-red); margin-top: 5px; }
+        .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.6rem; margin: 35px 0 15px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
+        .product { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+        .p-info { flex: 1; padding-right: 10px; }
+        .p-info h3 { margin: 0; font-size: 1.05rem; color: var(--text-product); font-weight: 700; text-transform: uppercase; }
+        .p-info p { margin: 3px 0 0; font-size: 0.8rem; color: var(--text-dim); line-height: 1.2; }
+        .p-prices { display: flex; gap: 6px; }
+        .p-opt { color: #fff; font-size: 0.85rem; cursor: pointer; border: 1px solid #222; padding: 6px 10px; border-radius: 4px; background: transparent; transition: 0.2s; }
+        .p-opt span { color: var(--brand-gold); font-weight: bold; }
+        
+        /* Carrito Flotante */
+        #order-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: #fff; color: #000; padding: 20px; box-sizing: border-box; display: none; border-radius: 20px 20px 0 0; z-index: 1000; max-height: 85vh; overflow-y: auto; }
+        .cart-item { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 10px 0; font-size: 0.9rem; }
+        .qty-btns { display: flex; gap: 10px; align-items: center; }
+        .qty-btn { background: #eee; border: none; padding: 2px 8px; border-radius: 3px; cursor: pointer; font-weight: bold; }
+        
+        /* Formulario */
+        .form-group { margin-top: 15px; text-align: left; }
+        .form-group label { display: block; font-size: 0.8rem; margin-bottom: 4px; font-weight: bold; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-family: inherit; }
+        .combined-info { display: none; background: #f9f9f9; padding: 10px; border-radius: 5px; margin-top: 5px; font-size: 0.8rem; }
+        .btn-send { background: #000; color: #fff; padding: 14px; border-radius: 50px; text-decoration: none; display: block; margin-top: 20px; font-weight: bold; cursor: pointer; border: none; width: 100%; }
     </style>
 </head>
 <body>
@@ -34,87 +45,173 @@
     </div>
 
     <div id="order-bar">
-        <div id="order-summary"></div>
-        <a href="#" id="whatsapp-link" class="btn-submit" target="_blank">ENVIAR PEDIDO POR WHATSAPP</a>
+        <h2 style="margin-top:0">Tu Pedido</h2>
+        <div id="cart-items"></div>
+        <div style="margin: 15px 0; font-weight: bold; border-top: 2px solid #000; padding-top: 10px;">
+            Total: $<span id="cart-total">0.00</span>
+        </div>
+
+        <div class="form-group">
+            <label>Nombre y Apellido</label>
+            <input type="text" id="c-nombre" required>
+        </div>
+        <div class="form-group">
+            <label>Cédula de Identidad</label>
+            <input type="number" id="c-cedula" required>
+        </div>
+        <div class="form-group">
+            <label>Teléfono de Contacto</label>
+            <input type="tel" id="c-telefono" required>
+        </div>
+        <div class="form-group">
+            <label>Tipo de Entrega</label>
+            <select id="c-entrega" onchange="toggleDelivery()">
+                <option value="Pick Up">Pick Up</option>
+                <option value="Delivery">Delivery</option>
+            </select>
+        </div>
+        <div id="delivery-fields" style="display:none">
+            <div class="form-group">
+                <label>Dirección Exacta</label>
+                <textarea id="c-direccion"></textarea>
+            </div>
+            <button class="qty-btn" style="width:100%; margin-top:5px;" onclick="getGPS()">📍 Adjuntar Ubicación GPS</button>
+            <input type="hidden" id="c-gps">
+        </div>
+        <div class="form-group">
+            <label>Método de Pago</label>
+            <select id="c-pago" onchange="togglePago()">
+                <option value="Pago Móvil">Pago Móvil</option>
+                <option value="Binance">Binance</option>
+                <option value="Efectivo Divisas">Efectivo Divisas</option>
+                <option value="Combinado">Combinado</option>
+            </select>
+            <div id="combined-note" class="combined-info">Explique cómo desea combinar su pago:</div>
+            <textarea id="c-pago-nota" style="display:none; margin-top:5px;"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Notas adicionales</label>
+            <textarea id="c-notas" placeholder="Ej: Sin azúcar, muy frío..."></textarea>
+        </div>
+
+        <button onclick="sendOrder()" class="btn-send">ENVIAR PEDIDO POR WHATSAPP</button>
+        <button onclick="closeCart()" style="background:none; border:none; color: #666; margin-top:10px; cursor:pointer; width:100%">Cerrar y seguir viendo</button>
     </div>
 
     <script>
-        // CONEXIÓN CON TU GOOGLE SHEETS
         const sheetId = '1dHPXGveUToshD1fKRnEf0EwdNnTNE3EuvYTQA3200q8';
         const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Productos`;
+        let cart = [];
 
         async function loadMenu() {
             try {
                 const response = await fetch(base);
                 const text = await response.text();
-                const data = parseCSV(text);
-                renderMenu(data);
-            } catch (error) {
-                document.getElementById('menu-content').innerHTML = "Error al cargar productos.";
-            }
-        }
-
-        function parseCSV(text) {
-            const lines = text.split('\n').slice(1);
-            const menu = {};
-            lines.forEach(line => {
-                const [seccion, categoria, nombre, descripcion, precio1, precio2] = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
-                if (!menu[categoria]) menu[categoria] = [];
-                
-                const precios = [];
-                if (precio1 && precio1.trim() !== '""') precios.push({ size: '12oz', precio: precio1.replace(/"/g, '') });
-                if (precio2 && precio2.trim() !== '""') precios.push({ size: '16oz', precio: precio2.replace(/"/g, '') });
-                
-                menu[categoria].push({
-                    nombre: nombre.replace(/"/g, ''),
-                    descripcion: descripcion.replace(/"/g, ''),
-                    precios: precios
+                const lines = text.split('\n').slice(1);
+                const menu = {};
+                lines.forEach(line => {
+                    const [seccion, categoria, nombre, descripcion, precio1, precio2] = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s?.replace(/"/g, '').trim());
+                    if (!menu[categoria]) menu[categoria] = [];
+                    const opts = [];
+                    if (precio1) opts.push({ label: precio2 ? '12oz' : '', price: precio1 });
+                    if (precio2) opts.push({ label: '16oz', price: precio2 });
+                    menu[categoria].push({ nombre, descripcion, opts });
                 });
-            });
-            return menu;
+                renderMenu(menu);
+            } catch (e) { document.getElementById('menu-content').innerText = "Error de conexión."; }
         }
 
-        function renderMenu(categories) {
+        function renderMenu(menu) {
             const container = document.getElementById('menu-content');
             container.innerHTML = '';
-            for (const cat in categories) {
-                const section = document.createElement('div');
-                section.innerHTML = `<h2 class="category-title">${cat}</h2>`;
-                categories[cat].forEach(p => {
-                    const item = document.createElement('div');
-                    item.className = 'product';
-                    item.innerHTML = `
-                        <div class="p-info">
-                            <h3>${p.nombre}</h3>
-                            <p>${p.descripcion}</p>
-                        </div>
-                        <div class="p-prices">
-                            ${p.precios.map(pr => `<div class="p-opt" onclick="addToCart('${p.nombre}', '${pr.size}', '${pr.precio}')">${pr.size} <span>$${pr.precio}</span></div>`).join('')}
-                        </div>
+            for (const cat in menu) {
+                const h2 = document.createElement('h2');
+                h2.className = 'category-title';
+                h2.innerText = cat;
+                container.appendChild(h2);
+                menu[cat].forEach(p => {
+                    const div = document.createElement('div');
+                    div.className = 'product';
+                    div.innerHTML = `
+                        <div class="p-info"><h3>${p.nombre}</h3><p>${p.descripcion}</p></div>
+                        <div class="p-prices">${p.opts.map(o => `<div class="p-opt" onclick="addToCart('${p.nombre}', '${o.label}', ${o.price})">${o.label} <span>$${o.price}</span></div>`).join('')}</div>
                     `;
-                    section.appendChild(item);
+                    container.appendChild(div);
                 });
-                container.appendChild(section);
             }
         }
 
-        let cart = [];
         function addToCart(name, size, price) {
-            cart.push({name, size, price});
-            updateOrderBar();
+            const id = name + size;
+            const existing = cart.find(i => i.id === id);
+            if (existing) existing.qty++;
+            else cart.push({ id, name, size, price, qty: 1 });
+            updateCart();
         }
 
-        function updateOrderBar() {
+        function updateCart() {
             const bar = document.getElementById('order-bar');
-            const summary = document.getElementById('order-summary');
-            const link = document.getElementById('whatsapp-link');
-            if(cart.length > 0) {
-                bar.style.display = 'block';
-                summary.innerText = `${cart.length} productos seleccionados`;
-                const text = encodeURIComponent("¡Hola Coolffee! Quisiera pedir:\n" + cart.map(i => `- ${i.name} (${i.size})`).join('\n'));
-                link.href = `https://wa.me/584124043960?text=${text}`;
+            const list = document.getElementById('cart-items');
+            bar.style.display = cart.length ? 'block' : 'none';
+            list.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price * item.qty;
+                list.innerHTML += `
+                    <div class="cart-item">
+                        <div>${item.name} ${item.size ? '('+item.size+')' : ''}<br><small>$${item.price}</small></div>
+                        <div class="qty-btns">
+                            <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                            <span>${item.qty}</span>
+                            <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                        </div>
+                    </div>`;
+            });
+            document.getElementById('cart-total').innerText = total.toFixed(2);
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleDelivery() { document.getElementById('delivery-fields').style.display = document.getElementById('c-entrega').value === 'Delivery' ? 'block' : 'none'; }
+        function togglePago() { 
+            const isComb = document.getElementById('c-pago').value === 'Combinado';
+            document.getElementById('combined-note').style.display = isComb ? 'block' : 'none';
+            document.getElementById('c-pago-nota').style.display = isComb ? 'block' : 'none';
+        }
+        function closeCart() { document.getElementById('order-bar').style.display = 'none'; }
+        
+        function getGPS() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    document.getElementById('c-gps').value = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    alert("📍 Ubicación fijada con éxito.");
+                });
             }
+        }
+
+        function sendOrder() {
+            const n = document.getElementById('c-nombre').value;
+            const tel = document.getElementById('c-telefono').value;
+            if(!n || !tel) return alert("Nombre y Teléfono son obligatorios.");
+            
+            let msg = `*NUEVO PEDIDO - COOLFFEE*\n\n`;
+            msg += `*Cliente:* ${n}\n*Cédula:* ${document.getElementById('c-cedula').value}\n*Tlf:* ${tel}\n`;
+            msg += `*Entrega:* ${document.getElementById('c-entrega').value}\n`;
+            if(document.getElementById('c-gps').value) msg += `*GPS:* ${document.getElementById('c-gps').value}\n`;
+            msg += `*Pago:* ${document.getElementById('c-pago').value}\n`;
+            if(document.getElementById('c-pago-nota').value) msg += `*Nota Pago:* ${document.getElementById('c-pago-nota').value}\n\n`;
+            msg += `*PRODUCTOS:*\n` + cart.map(i => `- ${i.qty}x ${i.name} ${i.size ? '('+i.size+')' : ''}`).join('\n');
+            msg += `\n\n*TOTAL: $${document.getElementById('cart-total').innerText}*`;
+            if(document.getElementById('c-notas').value) msg += `\n\n*Notas:* ${document.getElementById('c-notas').value}`;
+            
+            window.open(`https://wa.me/584167492934?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
         loadMenu();
     </script>
+</body>
+</html>
