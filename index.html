@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coolffee - Menú Real Time</title>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --brand-gold: #c29957; --line-red: #bc2c2c; --bg: #030303; --text-product: #d1d1d1; --text-dim: #666; }
+        body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; }
+        .app-container { width: 100%; max-width: 480px; padding: 20px 25px 140px; box-sizing: border-box; }
+        .header-section { text-align: center; margin-top: 40px; margin-bottom: 25px; }
+        .header-section h1 { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 3.5rem; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
+        .red-bar { width: 100%; height: 3px; background-color: var(--line-red); margin: 5px auto 0; }
+        .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.8rem; margin: 40px 0 20px; text-transform: uppercase; border-bottom: 1px solid #222; padding-bottom: 8px; }
+        .product { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; text-align: left; }
+        .p-info { flex: 1; padding-right: 15px; }
+        .p-info h3 { margin: 0; font-size: 1.1rem; color: var(--text-product); font-weight: 700; text-transform: uppercase; }
+        .p-info p { margin: 4px 0 0; font-size: 0.85rem; color: var(--text-dim); line-height: 1.3; }
+        .p-prices { display: flex; gap: 8px; flex-shrink: 0; }
+        .p-opt { color: #fff; font-size: 0.9rem; cursor: pointer; border: 1px solid #444; padding: 8px 12px; border-radius: 5px; transition: 0.2s; display: flex; align-items: center; background: #111; }
+        .p-opt span { color: var(--brand-gold); margin-left: 4px; font-weight: bold; }
+        #order-bar { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--brand-gold); color: #000; padding: 20px; box-sizing: border-box; display: none; text-align: center; font-weight: bold; border-radius: 20px 20px 0 0; box-shadow: 0 -5px 20px rgba(0,0,0,0.5); z-index: 1000; }
+        .btn-submit { background: #000; color: #fff; padding: 12px 25px; border-radius: 50px; text-decoration: none; display: inline-block; margin-top: 10px; font-size: 1rem; transition: 0.3s; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="header-section">
+            <h1>COOLFFEE</h1>
+            <div class="red-bar"></div>
+        </div>
+        <div id="menu-content">Cargando menú...</div>
+    </div>
+
+    <div id="order-bar">
+        <div id="order-summary"></div>
+        <a href="#" id="whatsapp-link" class="btn-submit" target="_blank">ENVIAR PEDIDO POR WHATSAPP</a>
+    </div>
+
+    <script>
+        // TU ENLACE DE GOOGLE SHEETS (IMPORTANTE: Verifica que sea el correcto)
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyi8Uun1vH4fW6-yT9zS7u-H2Gq1E6O9U-j-r4Z-k-X/exec';
+        
+        async function loadMenu() {
+            try {
+                const response = await fetch(WEB_APP_URL);
+                const data = await response.json();
+                renderMenu(data);
+            } catch (error) {
+                document.getElementById('menu-content').innerHTML = "Error al cargar productos.";
+            }
+        }
+
+        function renderMenu(categories) {
+            const container = document.getElementById('menu-content');
+            container.innerHTML = '';
+            for (const cat in categories) {
+                const section = document.createElement('div');
+                section.innerHTML = `<h2 class="category-title">${cat}</h2>`;
+                categories[cat].forEach(p => {
+                    const item = document.createElement('div');
+                    item.className = 'product';
+                    item.innerHTML = `
+                        <div class="p-info">
+                            <h3>${p.nombre}</h3>
+                            <p>${p.descripcion}</p>
+                        </div>
+                        <div class="p-prices">
+                            ${p.precios.map(pr => `<div class="p-opt" onclick="addToCart('${p.nombre}', '${pr.size}', ${pr.precio})">${pr.size} <span>$${pr.precio}</span></div>`).join('')}
+                        </div>
+                    `;
+                    section.appendChild(item);
+                });
+                container.appendChild(section);
+            }
+        }
+        
+        let cart = [];
+        function addToCart(name, size, price) {
+            cart.push({name, size, price});
+            updateOrderBar();
+        }
+
+        function updateOrderBar() {
+            const bar = document.getElementById('order-bar');
+            const summary = document.getElementById('order-summary');
+            const link = document.getElementById('whatsapp-link');
+            if(cart.length > 0) {
+                bar.style.display = 'block';
+                const total = cart.reduce((s, i) => s + i.price, 0);
+                summary.innerText = `${cart.length} productos seleccionados - Total: $${total}`;
+                const text = encodeURIComponent("¡Hola Coolffee! Quisiera pedir:\n" + cart.map(i => `- ${i.name} (${i.size})`).join('\n'));
+                link.href = `https://wa.me/584124043960?text=${text}`;
+            }
+        }
+
+        loadMenu();
+    </script>
+</body>
+</html>
