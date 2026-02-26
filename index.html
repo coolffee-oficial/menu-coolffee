@@ -17,12 +17,33 @@
 
         /* Menu Items */
         .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.6rem; margin: 35px 0 15px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
-        .product { display: flex; justify-content: space-between; align-items: center; margin-bottom: 22px; }
+        
+        .product { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 10px; }
+        .p-info { flex: 1; }
         .p-info h3 { margin: 0; font-size: 1.05rem; color: var(--text-product); font-weight: 700; text-transform: uppercase; }
         .p-info p { margin: 3px 0 0; font-size: 0.8rem; color: var(--text-dim); line-height: 1.2; }
-        .p-prices { display: flex; gap: 6px; }
-        .p-opt { color: #fff; font-size: 0.85rem; cursor: pointer; border: 1px solid #333; padding: 6px 10px; border-radius: 4px; background: #111; }
-        .p-opt span { color: var(--brand-gold); font-weight: bold; }
+        
+        /* Botones de Precios Alineados a la Derecha */
+        .p-prices { display: flex; gap: 8px; flex-shrink: 0; }
+        .p-opt { 
+            color: #fff; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            border: 1px solid #333; 
+            width: 75px; /* Tamaño uniforme */
+            height: 38px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px; 
+            background: #111; 
+            transition: 0.2s;
+            line-height: 1;
+        }
+        .p-opt:active { transform: scale(0.95); background: #222; }
+        .p-opt span { color: var(--brand-gold); font-weight: bold; margin-top: 2px; }
+        .p-opt small { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
 
         /* Barra Flotante Inicial */
         #view-cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--brand-gold); color: #000; padding: 15px; border-radius: 50px; text-align: center; font-weight: 800; cursor: pointer; display: none; z-index: 999; box-shadow: 0 5px 20px rgba(0,0,0,0.5); text-transform: uppercase; }
@@ -114,8 +135,8 @@
                     const [seccion, categoria, nombre, descripcion, precio1, precio2] = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s?.replace(/"/g, '').trim());
                     if (!menu[categoria]) menu[categoria] = [];
                     const opts = [];
-                    if (precio1) opts.push({ label: precio2 ? '12oz' : '', price: precio1 });
-                    if (precio2) opts.push({ label: '16oz', price: precio2 });
+                    if (precio1 && precio1 !== "") opts.push({ label: precio2 ? '12oz' : 'Ver', price: precio1 });
+                    if (precio2 && precio2 !== "") opts.push({ label: '16oz', price: precio2 });
                     menu[categoria].push({ nombre, descripcion, opts });
                 });
                 renderMenu(menu);
@@ -132,7 +153,12 @@
                     div.className = 'product';
                     div.innerHTML = `
                         <div class="p-info"><h3>${p.nombre}</h3><p>${p.descripcion}</p></div>
-                        <div class="p-prices">${p.opts.map(o => `<div class="p-opt" onclick="addToCart('${p.nombre}', '${o.label}', ${o.price})">${o.label} <span>$${o.price}</span></div>`).join('')}</div>
+                        <div class="p-prices">${p.opts.map(o => `
+                            <div class="p-opt" onclick="addToCart('${p.nombre}', '${o.label}', ${o.price})">
+                                <small>${o.label === 'Ver' ? '' : o.label}</small>
+                                <span>$${o.price}</span>
+                            </div>`).join('')}
+                        </div>
                     `;
                     container.appendChild(div);
                 });
@@ -140,10 +166,11 @@
         }
 
         function addToCart(name, size, price) {
-            const id = name + size;
+            const labelSize = size === 'Ver' ? '' : size;
+            const id = name + labelSize;
             const item = cart.find(i => i.id === id);
             if (item) item.qty++;
-            else cart.push({ id, name, size, price, qty: 1 });
+            else cart.push({ id, name, size: labelSize, price, qty: 1 });
             updateUI();
         }
 
