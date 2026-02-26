@@ -39,17 +39,39 @@
     </div>
 
     <script>
-        // TU ENLACE DE GOOGLE SHEETS (IMPORTANTE: Verifica que sea el correcto)
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyi8Uun1vH4fW6-yT9zS7u-H2Gq1E6O9U-j-r4Z-k-X/exec';
-        
+        // CONEXIÓN CON TU GOOGLE SHEETS
+        const sheetId = '1dHPXGveUToshD1fKRnEf0EwdNnTNE3EuvYTQA3200q8';
+        const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Productos`;
+
         async function loadMenu() {
             try {
-                const response = await fetch(WEB_APP_URL);
-                const data = await response.json();
+                const response = await fetch(base);
+                const text = await response.text();
+                const data = parseCSV(text);
                 renderMenu(data);
             } catch (error) {
                 document.getElementById('menu-content').innerHTML = "Error al cargar productos.";
             }
+        }
+
+        function parseCSV(text) {
+            const lines = text.split('\n').slice(1);
+            const menu = {};
+            lines.forEach(line => {
+                const [seccion, categoria, nombre, descripcion, precio1, precio2] = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/);
+                if (!menu[categoria]) menu[categoria] = [];
+                
+                const precios = [];
+                if (precio1 && precio1.trim() !== '""') precios.push({ size: '12oz', precio: precio1.replace(/"/g, '') });
+                if (precio2 && precio2.trim() !== '""') precios.push({ size: '16oz', precio: precio2.replace(/"/g, '') });
+                
+                menu[categoria].push({
+                    nombre: nombre.replace(/"/g, ''),
+                    descripcion: descripcion.replace(/"/g, ''),
+                    precios: precios
+                });
+            });
+            return menu;
         }
 
         function renderMenu(categories) {
@@ -67,7 +89,7 @@
                             <p>${p.descripcion}</p>
                         </div>
                         <div class="p-prices">
-                            ${p.precios.map(pr => `<div class="p-opt" onclick="addToCart('${p.nombre}', '${pr.size}', ${pr.precio})">${pr.size} <span>$${pr.precio}</span></div>`).join('')}
+                            ${p.precios.map(pr => `<div class="p-opt" onclick="addToCart('${p.nombre}', '${pr.size}', '${pr.precio}')">${pr.size} <span>$${pr.precio}</span></div>`).join('')}
                         </div>
                     `;
                     section.appendChild(item);
@@ -75,7 +97,7 @@
                 container.appendChild(section);
             }
         }
-        
+
         let cart = [];
         function addToCart(name, size, price) {
             cart.push({name, size, price});
@@ -88,8 +110,7 @@
             const link = document.getElementById('whatsapp-link');
             if(cart.length > 0) {
                 bar.style.display = 'block';
-                const total = cart.reduce((s, i) => s + i.price, 0);
-                summary.innerText = `${cart.length} productos seleccionados - Total: $${total}`;
+                summary.innerText = `${cart.length} productos seleccionados`;
                 const text = encodeURIComponent("¡Hola Coolffee! Quisiera pedir:\n" + cart.map(i => `- ${i.name} (${i.size})`).join('\n'));
                 link.href = `https://wa.me/584124043960?text=${text}`;
             }
@@ -97,5 +118,3 @@
 
         loadMenu();
     </script>
-</body>
-</html>
