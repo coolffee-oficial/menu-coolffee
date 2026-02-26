@@ -10,29 +10,24 @@
         body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 480px; padding: 20px 20px 120px; box-sizing: border-box; }
         
-        /* Headers */
         .header-section { text-align: center; margin: 40px 0 30px; }
         .header-section h1 { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 3.2rem; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
         .red-bar { width: 100%; height: 2px; background-color: var(--line-red); margin-top: 5px; }
 
-        /* Menu Items */
         .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.6rem; margin: 35px 0 15px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
         .product { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 10px; }
         .p-info { flex: 1; }
         .p-info h3 { margin: 0; font-size: 1.05rem; color: var(--text-product); font-weight: 700; text-transform: uppercase; }
         .p-info p { margin: 3px 0 0; font-size: 0.8rem; color: var(--text-dim); line-height: 1.2; }
         
-        /* Botones de Precios */
         .p-prices { display: flex; gap: 8px; flex-shrink: 0; }
         .p-opt { color: #fff; font-size: 0.85rem; cursor: pointer; border: 1px solid #333; width: 75px; height: 38px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; background: #111; transition: 0.2s; line-height: 1; }
         .p-opt:active { transform: scale(0.95); background: #222; }
         .p-opt span { color: var(--brand-gold); font-weight: bold; margin-top: 2px; }
         .p-opt small { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
 
-        /* Barra Flotante Inicial */
         #view-cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--brand-gold); color: #000; padding: 15px; border-radius: 50px; text-align: center; font-weight: 800; cursor: pointer; display: none; z-index: 999; box-shadow: 0 5px 20px rgba(0,0,0,0.5); text-transform: uppercase; }
 
-        /* Panel Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 1001; }
         .modal-content { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--card-bg); border-top: 3px solid var(--brand-gold); border-radius: 25px 25px 0 0; padding: 25px; box-sizing: border-box; max-height: 90vh; overflow-y: auto; color: #fff; }
         
@@ -40,7 +35,6 @@
         .qty-controls { display: flex; align-items: center; gap: 15px; }
         .qty-btn { background: transparent; border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
 
-        /* Formulario */
         .form-group { margin-top: 18px; }
         .form-group label { display: block; font-size: 0.7rem; color: var(--brand-gold); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: inherit; }
@@ -119,15 +113,22 @@
                 const lines = text.split('\n').slice(1);
                 const menu = {};
                 lines.forEach(line => {
-                    const [seccion, categoria, nombre, descripcion, precio1, precio2] = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s?.replace(/"/g, '').trim());
+                    const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s?.replace(/"/g, '').trim());
+                    const categoria = columns[1];
+                    const nombre = columns[2];
+                    const descripcion = columns[3];
+                    const p1 = columns[4];
+                    const p2 = columns[5];
+
                     if (!menu[categoria]) menu[categoria] = [];
                     const opts = [];
-                    if (precio1 && precio1 !== "") opts.push({ label: precio2 ? '12oz' : 'Ver', price: precio1 });
-                    if (precio2 && precio2 !== "") opts.push({ label: '16oz', price: precio2 });
+                    // Forzamos que el precio sea tratado como número flotante
+                    if (p1 && p1 !== "") opts.push({ label: (p2 && p2 !== "") ? '12oz' : 'Ver', price: parseFloat(p1.replace(',', '.')) });
+                    if (p2 && p2 !== "") opts.push({ label: '16oz', price: parseFloat(p2.replace(',', '.')) });
                     menu[categoria].push({ nombre, descripcion, opts });
                 });
                 renderMenu(menu);
-            } catch (e) { document.getElementById('menu-content').innerText = "Error cargando productos."; }
+            } catch (e) { console.error(e); }
         }
 
         function renderMenu(menu) {
@@ -143,7 +144,7 @@
                         <div class="p-prices">${p.opts.map(o => `
                             <div class="p-opt" onclick="addToCart('${p.nombre}', '${o.label}', ${o.price})">
                                 <small>${o.label === 'Ver' ? '' : o.label}</small>
-                                <span>$${o.price}</span>
+                                <span>$${o.price.toFixed(2)}</span>
                             </div>`).join('')}
                         </div>
                     `;
@@ -156,8 +157,9 @@
             const labelSize = size === 'Ver' ? '' : size;
             const id = name + labelSize;
             const item = cart.find(i => i.id === id);
+            // El precio ya viene como número flotante
             if (item) item.qty++;
-            else cart.push({ id, name, size: labelSize, price, qty: 1 });
+            else cart.push({ id, name, size: labelSize, price: parseFloat(price), qty: 1 });
             updateUI();
         }
 
@@ -172,7 +174,7 @@
             const list = document.getElementById('cart-list');
             list.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
-                    <div>${item.name} <small style="color:var(--brand-gold)">${item.size}</small><br>$${item.price}</div>
+                    <div>${item.name} <small style="color:var(--brand-gold)">${item.size}</small><br>$${item.price.toFixed(2)}</div>
                     <div class="qty-controls">
                         <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
                         <span>${item.qty}</span>
@@ -219,7 +221,7 @@
             msg += `*Entrega:* ${document.getElementById('c-entrega').value}\n`;
             if(document.getElementById('c-gps').value) msg += `*GPS:* ${document.getElementById('c-gps').value}\n`;
             msg += `*Pago:* ${document.getElementById('c-pago').value}\n`;
-            msg += `\n*PRODUCTOS:*\n` + cart.map(i => `- ${i.qty}x ${i.name} ${i.size}`).join('\n');
+            msg += `\n*PRODUCTOS:*\n` + cart.map(i => `- ${i.qty}x ${i.name} ${i.size} ($${(i.price * i.qty).toFixed(2)})`).join('\n');
             msg += `\n\n*TOTAL: $${document.getElementById('modal-total').innerText}*`;
             window.open(`https://wa.me/584167492934?text=${encodeURIComponent(msg)}`, '_blank');
         }
