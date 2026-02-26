@@ -224,7 +224,10 @@
             
             msg += `\n*PRODUCTOS:*\n`;
             msg += `__________________________\n\n`;
-            msg += cart.map(i => `*${i.qty}x ${i.cat.toUpperCase()} ${i.name}* ${i.size ? '['+i.size+']' : ''}`).join('\n');
+            msg += cart.map(i => {
+                const sub = (i.price * i.qty).toFixed(2);
+                return `*${i.qty}x ${i.cat.toUpperCase()} ${i.name}* ${i.size ? '['+i.size+']' : ''}\n  _Precio: $${i.price.toFixed(2)} c/u - Subtotal: $${sub}_`;
+            }).join('\n\n');
             msg += `\n__________________________\n\n`;
             
             msg += `*TOTAL A PAGAR: $${document.getElementById('modal-total').innerText}*`;
