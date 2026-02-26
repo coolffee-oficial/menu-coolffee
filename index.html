@@ -122,10 +122,9 @@
 
                     if (!menu[categoria]) menu[categoria] = [];
                     const opts = [];
-                    // Forzamos que el precio sea tratado como número flotante
                     if (p1 && p1 !== "") opts.push({ label: (p2 && p2 !== "") ? '12oz' : 'Ver', price: parseFloat(p1.replace(',', '.')) });
                     if (p2 && p2 !== "") opts.push({ label: '16oz', price: parseFloat(p2.replace(',', '.')) });
-                    menu[categoria].push({ nombre, descripcion, opts });
+                    menu[categoria].push({ categoria, nombre, descripcion, opts });
                 });
                 renderMenu(menu);
             } catch (e) { console.error(e); }
@@ -142,7 +141,7 @@
                     div.innerHTML = `
                         <div class="p-info"><h3>${p.nombre}</h3><p>${p.descripcion}</p></div>
                         <div class="p-prices">${p.opts.map(o => `
-                            <div class="p-opt" onclick="addToCart('${p.nombre}', '${o.label}', ${o.price})">
+                            <div class="p-opt" onclick="addToCart('${p.categoria}', '${p.nombre}', '${o.label}', ${o.price})">
                                 <small>${o.label === 'Ver' ? '' : o.label}</small>
                                 <span>$${o.price.toFixed(2)}</span>
                             </div>`).join('')}
@@ -153,13 +152,12 @@
             }
         }
 
-        function addToCart(name, size, price) {
+        function addToCart(cat, name, size, price) {
             const labelSize = size === 'Ver' ? '' : size;
-            const id = name + labelSize;
+            const id = cat + name + labelSize;
             const item = cart.find(i => i.id === id);
-            // El precio ya viene como número flotante
             if (item) item.qty++;
-            else cart.push({ id, name, size: labelSize, price: parseFloat(price), qty: 1 });
+            else cart.push({ id, cat, name, size: labelSize, price: parseFloat(price), qty: 1 });
             updateUI();
         }
 
@@ -174,7 +172,7 @@
             const list = document.getElementById('cart-list');
             list.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
-                    <div>${item.name} <small style="color:var(--brand-gold)">${item.size}</small><br>$${item.price.toFixed(2)}</div>
+                    <div><strong>${item.cat}</strong> ${item.name} <small style="color:var(--brand-gold)">${item.size}</small><br>$${item.price.toFixed(2)}</div>
                     <div class="qty-controls">
                         <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
                         <span>${item.qty}</span>
@@ -216,13 +214,22 @@
             const n = document.getElementById('c-nombre').value;
             if(!n || !document.getElementById('c-telefono').value) return alert("Nombre y Teléfono son obligatorios.");
             const code = 'CF-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-            let msg = `*PEDIDO #${code} - COOLFFEE*\n\n`;
+            
+            let msg = `*PEDIDO #${code} - COOLFFEE*\n`;
+            msg += `__________________________\n\n`;
             msg += `*Cliente:* ${n}\n*Cédula:* ${document.getElementById('c-cedula').value}\n*Tlf:* ${document.getElementById('c-telefono').value}\n`;
             msg += `*Entrega:* ${document.getElementById('c-entrega').value}\n`;
             if(document.getElementById('c-gps').value) msg += `*GPS:* ${document.getElementById('c-gps').value}\n`;
             msg += `*Pago:* ${document.getElementById('c-pago').value}\n`;
-            msg += `\n*PRODUCTOS:*\n` + cart.map(i => `- ${i.qty}x ${i.name} ${i.size} ($${(i.price * i.qty).toFixed(2)})`).join('\n');
-            msg += `\n\n*TOTAL: $${document.getElementById('modal-total').innerText}*`;
+            
+            msg += `\n*PRODUCTOS:*\n`;
+            msg += `__________________________\n\n`;
+            msg += cart.map(i => `*${i.qty}x ${i.cat.toUpperCase()} ${i.name}* ${i.size ? '['+i.size+']' : ''}`).join('\n');
+            msg += `\n__________________________\n\n`;
+            
+            msg += `*TOTAL A PAGAR: $${document.getElementById('modal-total').innerText}*`;
+            if(document.getElementById('c-notas').value) msg += `\n\n*Nota:* ${document.getElementById('c-notas').value}`;
+            
             window.open(`https://wa.me/584167492934?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
