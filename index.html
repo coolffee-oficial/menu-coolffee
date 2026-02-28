@@ -4,22 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>COOLFFEE - Menú</title>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;1,700;1,800&family=Inter:wght@400;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
     <style>
         :root { --brand-gold: #c29957; --line-red: #bc2c2c; --bg: #030303; --card-bg: #111; --text-product: #d1d1d1; --text-dim: #888; }
         body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 480px; padding: 20px 20px 120px; box-sizing: border-box; }
-        
-        .header-section { text-align: center; margin: 40px 0 30px; }
-        .header-section h1 { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 3.2rem; margin: 0; text-transform: uppercase; letter-spacing: 2px; }
-        .red-bar { width: 100%; height: 2px; background-color: var(--line-red); margin-top: 5px; }
 
+        /* --- NUEVO ENCABEZADO PREMIUM --- */
+        .header-section { text-align: center; margin: 60px 0 40px; }
+        .header-section h1 { 
+            font-family: 'Barlow Condensed', sans-serif; 
+            font-style: italic; 
+            font-weight: 800; 
+            color: var(--brand-gold); 
+            font-size: 5rem; 
+            margin: 0; 
+            text-transform: uppercase; 
+            letter-spacing: -2px; 
+            line-height: 0.8;
+            /* Efecto de profundidad nítida */
+            text-shadow: 2px 2px 0px #333, 4px 4px 0px #000;
+        }
+        .header-slogan {
+            font-family: 'Dancing Script', cursive;
+            color: var(--brand-gold);
+            font-size: 1.8rem;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+        .red-bar { width: 50px; height: 3px; background-color: var(--line-red); margin: 20px auto 0; }
+
+        /* --- ESTILOS DEL MENÚ --- */
         .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.6rem; margin: 35px 0 15px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
         .product { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; gap: 10px; }
         .p-info { flex: 1; }
         .p-info h3 { margin: 0; font-size: 1.05rem; color: var(--text-product); font-weight: 700; text-transform: uppercase; }
         .p-info p { margin: 3px 0 0; font-size: 0.8rem; color: var(--text-dim); line-height: 1.2; }
-        
+
         .p-prices { display: flex; gap: 8px; flex-shrink: 0; }
         .p-opt { color: #fff; font-size: 0.85rem; cursor: pointer; border: 1px solid #333; width: 75px; height: 38px; display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 6px; background: #111; transition: 0.2s; line-height: 1; }
         .p-opt:active { transform: scale(0.95); background: #222; }
@@ -30,7 +51,7 @@
 
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 1001; }
         .modal-content { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--card-bg); border-top: 3px solid var(--brand-gold); border-radius: 25px 25px 0 0; padding: 25px; box-sizing: border-box; max-height: 90vh; overflow-y: auto; color: #fff; }
-        
+
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #222; }
         .qty-controls { display: flex; align-items: center; gap: 15px; }
         .qty-btn { background: transparent; border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
@@ -38,7 +59,7 @@
         .form-group { margin-top: 18px; }
         .form-group label { display: block; font-size: 0.7rem; color: var(--brand-gold); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: inherit; }
-        
+
         .delivery-notice { font-size: 0.75rem; color: var(--brand-gold); margin-top: 8px; font-style: italic; border-left: 2px solid var(--line-red); padding-left: 10px; }
 
         .main-btn { background: var(--brand-gold); color: #000; padding: 16px; border-radius: 50px; border: none; width: 100%; font-weight: 800; text-transform: uppercase; margin-top: 25px; cursor: pointer; }
@@ -49,6 +70,7 @@
     <div class="app-container">
         <div class="header-section">
             <h1>COOLFFEE</h1>
+            <div class="header-slogan">Tómalo con calma...</div>
             <div class="red-bar"></div>
         </div>
         <div id="menu-content">Cargando menú...</div>
@@ -168,7 +190,7 @@
             document.getElementById('btn-qty').innerText = count;
             document.getElementById('btn-total').innerText = total.toFixed(2);
             document.getElementById('modal-total').innerText = total.toFixed(2);
-            
+
             const list = document.getElementById('cart-list');
             list.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
@@ -214,14 +236,14 @@
             const n = document.getElementById('c-nombre').value;
             if(!n || !document.getElementById('c-telefono').value) return alert("Nombre y Teléfono son obligatorios.");
             const code = 'CF-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-            
+
             let msg = `*PEDIDO #${code} - COOLFFEE*\n`;
             msg += `__________________________\n\n`;
             msg += `*Cliente:* ${n}\n*Cédula:* ${document.getElementById('c-cedula').value}\n*Tlf:* ${document.getElementById('c-telefono').value}\n`;
             msg += `*Entrega:* ${document.getElementById('c-entrega').value}\n`;
             if(document.getElementById('c-gps').value) msg += `*GPS:* ${document.getElementById('c-gps').value}\n`;
             msg += `*Pago:* ${document.getElementById('c-pago').value}\n`;
-            
+
             msg += `\n*PRODUCTOS:*\n`;
             msg += `__________________________\n\n`;
             msg += cart.map(i => {
@@ -229,10 +251,10 @@
                 return `*${i.qty}x ${i.cat.toUpperCase()} ${i.name}* ${i.size ? '['+i.size+']' : ''}\n  _Precio: $${i.price.toFixed(2)} c/u - Subtotal: $${sub}_`;
             }).join('\n\n');
             msg += `\n__________________________\n\n`;
-            
+
             msg += `*TOTAL A PAGAR: $${document.getElementById('modal-total').innerText}*`;
             if(document.getElementById('c-notas').value) msg += `\n\n*Nota:* ${document.getElementById('c-notas').value}`;
-            
+
             window.open(`https://wa.me/584167492934?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
