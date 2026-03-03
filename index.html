@@ -31,14 +31,13 @@
             margin-top: 15px;
             font-weight: 600;
         }
-        /* Se ha eliminado la clase .red-bar que creaba la línea debajo del eslogan */
 
-        /* --- SECCIÓN BEBIDAS FIJA --- */
-        .fixed-section-title {
+        /* --- SECCIONES GRANDES (BEBIDAS / POSTRES) --- */
+        .main-fixed-header {
             text-align: center;
-            margin: 40px 0 40px;
+            margin: 60px 0 40px;
         }
-        .fixed-section-title h2 {
+        .main-fixed-header h2 {
             font-family: 'Barlow Condensed', sans-serif; 
             font-style: italic; 
             font-weight: 700; 
@@ -69,23 +68,17 @@
         .p-opt span { color: var(--brand-gold); font-weight: bold; margin-top: 2px; }
         .p-opt small { font-size: 0.65rem; color: var(--text-dim); text-transform: uppercase; }
 
-        /* --- BOTÓN FLOTANTE CARRITO --- */
+        /* --- CARRITO --- */
         #view-cart-btn { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 400px; background: var(--brand-gold); color: #000; padding: 15px; border-radius: 50px; text-align: center; font-weight: 800; cursor: pointer; display: none; z-index: 999; box-shadow: 0 5px 20px rgba(0,0,0,0.5); text-transform: uppercase; }
-
-        /* --- MODALES --- */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; z-index: 1001; }
         .modal-content { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--card-bg); border-top: 3px solid var(--brand-gold); border-radius: 25px 25px 0 0; padding: 25px; box-sizing: border-box; max-height: 90vh; overflow-y: auto; color: #fff; }
-
         .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #222; }
         .qty-controls { display: flex; align-items: center; gap: 15px; }
         .qty-btn { background: transparent; border: 1px solid var(--brand-gold); color: var(--brand-gold); width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
-
         .form-group { margin-top: 18px; }
         .form-group label { display: block; font-size: 0.7rem; color: var(--brand-gold); text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; }
         .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; font-family: inherit; }
-
         .delivery-notice { font-size: 0.75rem; color: var(--brand-gold); margin-top: 8px; font-style: italic; border-left: 2px solid var(--line-red); padding-left: 10px; }
-
         .main-btn { background: var(--brand-gold); color: #000; padding: 16px; border-radius: 50px; border: none; width: 100%; font-weight: 800; text-transform: uppercase; margin-top: 25px; cursor: pointer; }
         .secondary-btn { background: none; border: none; color: var(--text-dim); width: 100%; margin-top: 15px; cursor: pointer; text-transform: uppercase; font-size: 0.75rem; }
     </style>
@@ -95,14 +88,21 @@
         <div class="header-section">
             <h1>COOLFFEE</h1>
             <div class="header-slogan">Tómalo con calma...</div>
-            </div>
+        </div>
 
-        <div class="fixed-section-title">
+        <div class="main-fixed-header">
             <h2>Bebidas</h2>
             <div class="full-red-bar"></div>
         </div>
 
-        <div id="menu-content">Cargando menú...</div>
+        <div id="bebidas-content">Cargando bebidas...</div>
+
+        <div class="main-fixed-header">
+            <h2>Postres</h2>
+            <div class="full-red-bar"></div>
+        </div>
+
+        <div id="postres-content">Cargando postres...</div>
     </div>
 
     <div id="view-cart-btn" onclick="openModal('cart')">Ver Pedido (<span id="btn-qty">0</span>) - $<span id="btn-total">0.00</span></div>
@@ -157,33 +157,58 @@
         const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&sheet=Productos`;
         let cart = [];
 
+        // Lista de categorías que consideramos Postres (puedes ajustarlas según tu Excel)
+        const categoriasPostres = ["POSTRES", "DULCES", "TORTAS", "GALLETAS", "SNACKS"];
+
         async function loadMenu() {
             try {
                 const res = await fetch(base);
                 const text = await res.text();
                 const lines = text.split('\n').slice(1);
-                const menu = {};
+                const menuBebidas = {};
+                const menuPostres = {};
+
                 lines.forEach(line => {
                     const columns = line.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(s => s?.replace(/"/g, '').trim());
+                    if (columns.length < 5) return;
+
                     const categoria = columns[1];
                     const nombre = columns[2];
                     const descripcion = columns[3];
                     const p1 = columns[4];
                     const p2 = columns[5];
 
-                    if (!menu[categoria]) menu[categoria] = [];
                     const opts = [];
                     if (p1 && p1 !== "") opts.push({ label: (p2 && p2 !== "") ? '12oz' : 'Ver', price: parseFloat(p1.replace(',', '.')) });
                     if (p2 && p2 !== "") opts.push({ label: '16oz', price: parseFloat(p2.replace(',', '.')) });
-                    menu[categoria].push({ categoria, nombre, descripcion, opts });
+
+                    const item = { categoria, nombre, descripcion, opts };
+
+                    // Separación lógica: Si la categoría está en la lista de postres, va al bloque de postres
+                    if (categoriasPostres.includes(categoria.toUpperCase())) {
+                        if (!menuPostres[categoria]) menuPostres[categoria] = [];
+                        menuPostres[categoria].push(item);
+                    } else {
+                        if (!menuBebidas[categoria]) menuBebidas[categoria] = [];
+                        menuBebidas[categoria].push(item);
+                    }
                 });
-                renderMenu(menu);
+
+                renderBlock(menuBebidas, 'bebidas-content');
+                renderBlock(menuPostres, 'postres-content');
             } catch (e) { console.error(e); }
         }
 
-        function renderMenu(menu) {
-            const container = document.getElementById('menu-content');
+        function renderBlock(menu, containerId) {
+            const container = document.getElementById(containerId);
             container.innerHTML = '';
+            
+            const keys = Object.keys(menu);
+            if (keys.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-dim); text-align:center;">Próximamente...</p>';
+                return;
+            }
+
             for (const cat in menu) {
                 container.innerHTML += `<h2 class="category-title">${cat}</h2>`;
                 menu[cat].forEach(p => {
@@ -255,7 +280,7 @@
         function getGPS() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(pos => {
-                    document.getElementById('c-gps').value = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+                    document.getElementById('c-gps').value = `http://maps.google.com/?q=${pos.coords.latitude},${pos.coords.longitude}`;
                     alert("📍 Ubicación fijada.");
                 });
             }
