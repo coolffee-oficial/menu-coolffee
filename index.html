@@ -10,7 +10,7 @@
         body { background-color: var(--bg); color: #fff; font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; }
         .app-container { width: 100%; max-width: 480px; padding: 20px 20px 120px; box-sizing: border-box; }
 
-        /* --- TÍTULO PRINCIPAL CON BORDE DE CONTRASTE --- */
+        /* --- NUEVO ENCABEZADO PREMIUM --- */
         .header-section { text-align: center; margin: 60px 0 40px; }
         .header-section h1 { 
             font-family: 'Barlow Condensed', sans-serif; 
@@ -22,13 +22,8 @@
             text-transform: uppercase; 
             letter-spacing: -2px; 
             line-height: 0.8;
-            /* Borde negro de 1px para contraste + Profundidad de 4px */
-            text-shadow: 
-                -1px -1px 0 var(--bg),  
-                 1px -1px 0 var(--bg),
-                -1px  1px 0 var(--bg),
-                 1px  1px 0 var(--bg),
-                 4px  4px 0px #000;
+            /* Efecto de profundidad nítida */
+            text-shadow: 2px 2px 0px #333, 4px 4px 0px #000;
         }
         .header-slogan {
             font-family: 'Dancing Script', cursive;
@@ -38,28 +33,6 @@
             font-weight: 600;
         }
         .red-bar { width: 50px; height: 3px; background-color: var(--line-red); margin: 20px auto 0; }
-
-        /* --- NUEVOS SUBTÍTULOS DE SECCIÓN (ESTILO LOGO) --- */
-        .section-separator { text-align: center; margin: 80px 0 40px; }
-        .section-title-unique { 
-            font-family: 'Barlow Condensed', sans-serif; 
-            font-style: italic; 
-            font-weight: 800; 
-            color: var(--brand-gold); 
-            font-size: 5rem; 
-            margin: 0; 
-            text-transform: uppercase; 
-            letter-spacing: -2px; 
-            line-height: 0.8;
-            /* Mismo efecto de borde y profundidad que el principal */
-            text-shadow: 
-                -1px -1px 0 var(--bg),  
-                 1px -1px 0 var(--bg),
-                -1px  1px 0 var(--bg),
-                 1px  1px 0 var(--bg),
-                 4px  4px 0px #000;
-        }
-        .section-red-bar-full { width: 100%; height: 3px; background-color: var(--line-red); margin-top: 15px; }
 
         /* --- ESTILOS DEL MENÚ --- */
         .category-title { font-family: 'Barlow Condensed', sans-serif; font-style: italic; font-weight: 700; color: var(--brand-gold); font-size: 1.6rem; margin: 35px 0 15px; text-transform: uppercase; border-bottom: 1px solid #1a1a1a; padding-bottom: 5px; }
@@ -171,7 +144,7 @@
 
                     if (!menu[categoria]) menu[categoria] = [];
                     const opts = [];
-                    if (p1 && p1 !== "") opts.push({ label: (p2 && p2 !== "") ? '12oz' : 'Gramos', price: parseFloat(p1.replace(',', '.')) });
+                    if (p1 && p1 !== "") opts.push({ label: (p2 && p2 !== "") ? '12oz' : 'Ver', price: parseFloat(p1.replace(',', '.')) });
                     if (p2 && p2 !== "") opts.push({ label: '16oz', price: parseFloat(p2.replace(',', '.')) });
                     menu[categoria].push({ categoria, nombre, descripcion, opts });
                 });
@@ -183,14 +156,7 @@
             const container = document.getElementById('menu-content');
             container.innerHTML = '';
             for (const cat in menu) {
-                // NUEVO: SECCIÓN CENTRADA CON ESTILO DE LOGO
-                container.innerHTML += `
-                    <div class="section-separator">
-                        <h2 class="section-title-unique">${cat}</h2>
-                        <div class="section-red-bar-full"></div>
-                    </div>
-                `;
-
+                container.innerHTML += `<h2 class="category-title">${cat}</h2>`;
                 menu[cat].forEach(p => {
                     const div = document.createElement('div');
                     div.className = 'product';
@@ -198,7 +164,7 @@
                         <div class="p-info"><h3>${p.nombre}</h3><p>${p.descripcion}</p></div>
                         <div class="p-prices">${p.opts.map(o => `
                             <div class="p-opt" onclick="addToCart('${p.categoria}', '${p.nombre}', '${o.label}', ${o.price})">
-                                <small>${o.label}</small>
+                                <small>${o.label === 'Ver' ? '' : o.label}</small>
                                 <span>$${o.price.toFixed(2)}</span>
                             </div>`).join('')}
                         </div>
@@ -209,10 +175,11 @@
         }
 
         function addToCart(cat, name, size, price) {
-            const id = cat + name + size;
+            const labelSize = size === 'Ver' ? '' : size;
+            const id = cat + name + labelSize;
             const item = cart.find(i => i.id === id);
             if (item) item.qty++;
-            else cart.push({ id, cat, name, size, price: parseFloat(price), qty: 1 });
+            else cart.push({ id, cat, name, size: labelSize, price: parseFloat(price), qty: 1 });
             updateUI();
         }
 
@@ -281,7 +248,7 @@
             msg += `__________________________\n\n`;
             msg += cart.map(i => {
                 const sub = (i.price * i.qty).toFixed(2);
-                return `*${i.qty}x ${i.cat.toUpperCase()} ${i.name}* [${i.size}]\n  _Precio: $${i.price.toFixed(2)} c/u - Subtotal: $${sub}_`;
+                return `*${i.qty}x ${i.cat.toUpperCase()} ${i.name}* ${i.size ? '['+i.size+']' : ''}\n  _Precio: $${i.price.toFixed(2)} c/u - Subtotal: $${sub}_`;
             }).join('\n\n');
             msg += `\n__________________________\n\n`;
 
