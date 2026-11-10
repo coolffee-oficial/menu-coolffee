@@ -204,7 +204,7 @@
             const list = document.getElementById('cart-list');
             list.innerHTML = cart.map((item, index) => `
                 <div class="cart-item">
-                    <div><strong>${item.name}</strong> ${item.size}<br>$${item.price.toFixed(2)}</div>
+                    <div><strong>${item.cat.toUpperCase()} ${item.name}</strong> ${item.size}<br>$${item.price.toFixed(2)}</div>
                     <div class="qty-controls">
                         <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
                         <span>${item.qty}</span>
@@ -244,7 +244,7 @@
             msg += `*Cliente:* ${n}\n*Tlf:* ${t}\n*Tipo:* ${document.getElementById('c-entrega').value}\n`;
             if(document.getElementById('c-gps').value) msg += `*Ubicación:* ${document.getElementById('c-gps').value}\n`;
             msg += `\n*PRODUCTOS:*\n`;
-            cart.forEach(i => { msg += `- ${i.qty}x ${i.name} ${i.size} ($${(i.price * i.qty).toFixed(2)})\n`; });
+            cart.forEach(i => { msg += `- ${i.qty}x ${i.cat.toUpperCase()} ${i.name} ${i.size} ($${(i.price * i.qty).toFixed(2)})\n`; });
             msg += `\n*TOTAL: $${document.getElementById('modal-total').innerText}*`;
             msg += `\n*Método de Pago:* ${document.getElementById('c-pago').value}`;
             window.open(`https://wa.me/584167492934?text=${encodeURIComponent(msg)}`, '_blank');
